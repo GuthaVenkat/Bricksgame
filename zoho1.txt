@@ -1,0 +1,199 @@
+import java.util.Scanner;
+ class Brick{
+    static int n;
+    //static int c;
+    static String brickMatrix[][];
+    Brick(int n)
+    {
+        this.n=n;
+        brickMatrix=new String[n][n];
+    }
+    
+    public static void init()
+   {
+    	for(int i=0;i<n;i++)
+		{
+			for(int j=0;j<n;j++)
+			{
+			   // System.out.println(i+" "+j);
+				if(i==0 || j==n-1 || j==0 )
+					brickMatrix[i][j]="w";
+				else if(i==n-1 && j==n/2)
+					brickMatrix[i][j]="o";
+				else if(i==n-1&&(j!=0 && j!=n-1))
+					brickMatrix[i][j]="G";
+				else
+					brickMatrix[i][j]=" ";
+			}
+		}
+		return;
+    }
+	public static void printm()
+	{
+		for(int i=0;i<n;i++)
+		{
+			for(int j=0;j<n;j++)
+			{
+				System.out.print(brickMatrix[i][j]+" ");
+			}
+			System.out.println("");
+		}
+	}
+	public static void Straight()
+	{
+	    int b=-1;
+	    for(int i=0;i<n;i++)
+    	{
+	     	if(brickMatrix[n-1][i].equals("o"))
+	     	{
+	           b=i;
+	        }
+    	}
+        System.out.println(b);
+        for(int i=n-2;i>-1;i--)
+		{
+	    	System.out.println(brickMatrix[i][b]);
+		    if(brickMatrix[i][b].equals("w"))
+		    {
+		       //	System.out.println("h "+i);
+		       	return;
+	        }
+		    else if(brickMatrix[i][b].equals(" "))
+		   {
+		       //	System.out.println("k "+i);
+		    	continue;
+		   }
+		   else
+		   {
+		        int u;
+		       	String sg=brickMatrix[i][b];
+		       	u=Integer.parseInt(sg);
+		        u--;
+		        //System.out.println(u);
+		        if(u!=0)
+		        {
+		        	brickMatrix[i][b]=String.valueOf(u);
+		        	break;
+		       	}
+		        else
+		       	{
+		       		brickMatrix[i][b]=" ";
+		       		break;
+		       	}
+		   }
+		}
+		return;
+	}
+	public static void leftD(int c)
+	{
+		int b=-1,pre=-1,p=-1;
+	    for(int i=0;i<n;i++)
+    	{
+	     	if(brickMatrix[n-1][i].equals("o"))
+	     	{
+	           b=i;
+	           pre=i;
+	        }
+    	}
+    	boolean s=true;
+    	int a=n-1;
+    	while(s)
+    	{
+    	    if(a>0||b>0)
+    	    {
+    	    if(brickMatrix[--a][--b].equals(" "))
+    	    {
+    	        continue;
+    	    }
+    	    else if(brickMatrix[--a][--b].equals("w"))
+    	    {
+    	        int r=a;
+    	        for(int i=0;i<n-1;i++)
+    	        {
+    	            if(brickMatrix[r][i].equals(" "))
+    	            {
+    	                continue;
+    	            }
+    	            else if(brickMatrix[r][i].equals("w"))
+    	            {
+    	                brickMatrix[n-1][n/2]="o";
+    	                c--;
+    	            }
+    	            else
+    	            {
+    	                 int u;
+		              	String sg=brickMatrix[r][i];
+		              	u=Integer.parseInt(sg);
+		                  u--;
+		              if(u!=0)
+		            {
+		             	brickMatrix[r][i]=String.valueOf(u);
+		             	p=i;
+		             	s=false;
+		             	c--;
+		             	break;
+		       	     }
+		       	     else{
+		       	         brickMatrix[r][i]=" ";
+		       	         p=i;
+		       	         s=false;
+		       	         c--;
+		       	         break;
+		       	     }
+    	            }
+    	        }
+    	    }
+    	    }
+    	}
+    	if(p!=-1&&pre!=-1)
+    	{
+    	brickMatrix[n-1][p]="o";
+    	brickMatrix[n-1][pre]="G";
+    	}
+    	return;
+		
+	}
+}
+public class Main 
+{
+	public static void main(String[] args) 
+	{
+       Scanner in = new Scanner(System.in);
+       int n;
+       System.out.print("Enter size of theNxN matrix");
+       n=in.nextInt();
+		Brick g1=new Brick(n);
+		g1.init();
+	    g1.printm();
+		int s=1,count=0;
+		while(s!=0)
+		{
+			System.out.print("Enter the brick's posistion and the brick type:");
+			int r = in.nextInt();
+			int c = in.nextInt();
+			int a = in.nextInt();
+			Brick.brickMatrix[r][c] = String.valueOf(a);
+			System.out.print("Do you want to continue(Y or N)?");
+			String v = in.next();
+			if(v.equals("N")) 
+			{
+				System.out.print("Enter ball count :");
+				count = in.nextInt();
+				s=0;
+			}
+		}
+		System.out.println("Ball count is"+count+".");
+		System.out.print("Enter the direction in which the ball need to traverse :");
+		String dir = in.next();
+		switch(dir) 
+		{
+		case "ST":g1.Straight();
+		          break;
+		case "LD":g1.leftD(count);
+		          break;
+        default:break;		
+		}
+	  g1.printm();
+	}
+
+}
