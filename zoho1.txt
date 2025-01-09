@@ -1,4 +1,6 @@
 import java.util.Scanner;
+
+vgfgyv
  class Brick{
     static int n;
     //static int c;
