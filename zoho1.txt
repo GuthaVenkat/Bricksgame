@@ -1,3 +1,12 @@
+git
+new testing with different branches
+
+
+
+
+
+//this is java classs
+
 import java.util.Scanner;
  class Brick{
     static int n;
